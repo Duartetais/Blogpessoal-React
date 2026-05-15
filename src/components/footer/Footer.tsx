@@ -1,15 +1,19 @@
 import { FacebookLogoIcon, InstagramLogoIcon, LinkedinLogoIcon } from "@phosphor-icons/react"
+import { useContext, type ReactNode } from "react";
+import { AuthContext } from "../../contexts/authContext" 
 
 function Footer() {
 
-    let data = new Date().getFullYear()
+    const { usuario } = useContext(AuthContext) 
 
-    return (
-        <>
+    let component: ReactNode = null 
+
+    if (usuario.token !== "") {
+        component = (
             <div className="flex justify-center bg-[#020617] text-white border-t-2 border-[#4fd1c5]">
                 <div className="container flex flex-col items-center py-4">
                     <p className='text-xl font-bold'>
-                       Cyber Blog Generation | Copyright: {data}
+                       Cyber Blog Generation | Copyright: {new Date().getFullYear()}
                     </p>
                     <p className='text-lg mb-2'>Acesse nossas redes sociais</p>
                     <div className='flex gap-4'>
@@ -25,6 +29,12 @@ function Footer() {
                     </div>
                 </div>
             </div>
+        )
+    }
+
+    return (
+        <>
+            {component} 
         </>
     )
 }

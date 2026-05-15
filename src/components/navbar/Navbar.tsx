@@ -1,30 +1,32 @@
-import { useContext } from "react";
+import { useContext, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "../../contexts/authContext";
+import { ToastAlerta } from "../../../src/util/ ToastAlerta";
+
 
 function Navbar() {
 
     const navigate = useNavigate();
-
     const { usuario, handleLogout } = useContext(AuthContext)
 
     function logout() {
-        handleLogout()
-        alert('O Usuário foi desconectado com sucesso!')
-        navigate('/')
+        handleLogout();
+        ToastAlerta('O Usuário foi desconectado com sucesso!', 'info');
+        navigate('/');
     }
 
-    return (
-        <>
-            <div className='w-full flex justify-center py-4 bg-[#020617] text-white border-b-2 border-[#4fd1c5] sticky top-0 z-50 shadow-2xl'>
+   let component: ReactNode = null;
 
+    if (usuario.token !== "") {
+        component = (
+            <div className='w-full flex justify-center py-4 bg-[#020617] text-white border-b-2 border-[#4fd1c5] sticky top-0 z-50 shadow-2xl'>
                 <div className="container flex justify-between text-lg mx-8 items-center">
                     <Link to='/home' className="text-2xl font-bold text-[#4fd1c5] hover:text-white transition-all">
-                        Blog Pessoal
+                        CyberBlog
                     </Link>
 
                     <p className="hidden md:block text-sm uppercase tracking-widest font-light">
-                        Protocolo: <span className="text-[#4fd1c5] font-bold">Cyber Segurança</span> | Operador: <span className="text-[#4fd1c5]">{usuario.nome}</span>
+                        Protocolo: <span className="text-[#4fd1c5] font-bold">Cyber Segurança</span> | Operador: <span className="text-[#4fd1c5] font-bold">{usuario.nome}</span>
                     </p>
 
                     <div className='flex gap-6 items-center text-sm font-medium'>
@@ -43,6 +45,12 @@ function Navbar() {
                     </div>
                 </div>
             </div>
+        )
+    }
+
+    return (
+        <>
+            {component}
         </>
     )
 }
